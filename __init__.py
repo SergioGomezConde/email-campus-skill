@@ -42,7 +42,29 @@ class EmailCampus(MycroftSkill):
 
     @intent_file_handler('campus.email.intent')
     def handle_campus_email(self, message):
-        self.speak_dialog('campus.email')
+
+        driver = inicio_sesion(self)
+
+        # Acceso al perfil
+        URLPerfil = driver.find_element(
+            by=By.XPATH, value='/html/body/div[4]/div[2]/header/div/div/div/div[1]/div[1]/div/div[1]/a').get_attribute('href')
+        driver.get(URLPerfil)
+
+        # Acceso a la seccion de detalles
+        driver.implicitly_wait(10)
+        driver.find_element(
+            by=By.XPATH, value='/html/body/div[4]/div[2]/div/div/section/div/div/div/div[2]/div/div/ul/li[2]/a').click()
+
+        # Obtencion del email
+        time.sleep(2)
+        email = driver.find_element(
+            by=By.XPATH, value='/html/body/div[4]/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[2]/div/div/div/section[1]/div/ul/li[2]/dl/dd/a').text
+
+        # Respuesta con el email
+        self.speak(
+            "Su direccion de correo electronico de la Universidad de Valladolid es: " + email)
+
+        driver.close
 
 
 def create_skill():
