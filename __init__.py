@@ -69,7 +69,7 @@ class EmailCampus(MycroftSkill):
             'email': email,
         })
 
-        with open(ficheroJSON, 'w') as ficheroDatos:
+        with open(ficheroJSON, 'w+') as ficheroDatos:
             json.dump(informacion, ficheroDatos, indent=4)
 
         # Lectura de la informacion del fichero JSON
