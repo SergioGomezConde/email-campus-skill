@@ -1,10 +1,14 @@
 import time
+import json
 
 from mycroft import MycroftSkill, intent_file_handler
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
+# Fichero JSON donde almacenar la informacion
+ficheroJSON = "/home/serggom/data.json"
+informacion = {'asignaturas': [], 'usuario': [], 'eventos': [], 'mensajes': []}
 
 def inicio_sesion(self):
     # Datos de acceso fijos
@@ -60,9 +64,23 @@ class EmailCampus(MycroftSkill):
         email = driver.find_element(
             by=By.XPATH, value='/html/body/div[4]/div[2]/div/div/section/div/div/div/div[2]/div/div/div/div[2]/div/div/div/section[1]/div/ul/li[2]/dl/dd/a').text
 
-        # Respuesta con el email
-        self.speak(
-            "Su direccion de correo electronico de la Universidad de Valladolid es: " + email)
+        # Almacenamiento de la informacion en el fichero JSON
+        informacion['usuario'].append({
+            'email': email,
+        })
+
+        with open(ficheroJSON, 'w') as ficheroDatos:
+            json.dump(informacion, ficheroDatos, indent=4)
+
+        # Lectura de la informacion del fichero JSON
+        with open(ficheroJSON) as ficheroUsuario:
+            data = json.load(ficheroUsuario)
+            for user in data['usuario']:
+                self.speak("Su direccion de correo electronico de la Universidad de Valladolid es: " + user['email'])
+
+        # # Respuesta con el email
+        # self.speak(
+        #     "Su direccion de correo electronico de la Universidad de Valladolid es: " + email)
 
         driver.close
 
