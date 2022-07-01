@@ -16,7 +16,8 @@ class EmailCampus(MycroftSkill):
         with open(ficheroJSON) as ficheroUsuario:
             data = json.load(ficheroUsuario)
             for user in data['usuario']:
-                self.speak("Su dirección de correo electrónico de la Universidad de Valladolid es: " + user['email'])
+                self.speak(
+                    "Su dirección de correo electrónico de la Universidad de Valladolid es: " + user['email'])
 
 
 def create_skill():
