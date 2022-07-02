@@ -24,6 +24,8 @@ class EmailCampus(MycroftSkill):
                     self.speak(
                         "Su dirección de correo electrónico de la Universidad de Valladolid es: " + user['email'])
 
+            ficheroUsuario.close()
+
         else:
             self.speak("Lo siento, no dispongo de esa información")
 
